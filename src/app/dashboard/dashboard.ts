@@ -46,7 +46,7 @@ export class Dashboard {
   }
 
   goReport(): void {
-  this.router.navigate(['/report.component']);
+  this.router.navigate(['/report-component']);
 }
 
 

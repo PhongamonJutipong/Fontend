@@ -1,0 +1,87 @@
+<div class="report-container">
+  <h1>📈 รายงานรายจ่าย</h1>
+
+  <!-- ส่วนควบคุมตัวกรอง (Filters) -->
+  <section class="filters">
+    <h3>ตัวกรองข้อมูล</h3>
+    <div class="filter-controls">
+      <label>
+        ตั้งแต่:
+        <!-- ใช้ [(ngModel)] กับ Signals ต้องใช้ [ngModel] และ (ngModelChange) แยกกัน -->
+        <input type="date" [ngModel]="dateFrom()" (ngModelChange)="dateFrom.set($event)">
+      </label>
+      <label>
+        ถึง:
+        <input type="date" [ngModel]="dateTo()" (ngModelChange)="dateTo.set($event)">
+      </label>
+      <label>
+        หมวดหมู่:
+        <select [ngModel]="categoryFilter()" (ngModelChange)="categoryFilter.set($event)">
+          <option value="">-- ทุกประเภท --</option>
+          <option *ngFor="let cat of categories()" [value]="cat">{{ cat }}</option>
+        </select>
+      </label>
+      <label>
+        ค้นหา:
+        <input type="search" placeholder="ชื่อ/หมายเหตุ" [ngModel]="keyword()" (ngModelChange)="keyword.set($event)">
+      </label>
+      <button class="ghost" (click)="clearFilters()">รีเซ็ต</button>
+      <button (click)="exportCSV()">💾 ส่งออก CSV ({{ count() }} รายการ)</button>
+    </div>
+  </section>
+
+  <hr>
+  
+  <ng-container *ngIf="count() > 0; else noData">
+    <!-- สรุปตัวเลข (Stats) -->
+    <section class="stats-summary">
+      <div class="pill">ยอดรวม: <strong>{{ total() | number:'1.2-2' }} บาท</strong></div>
+      <div class="pill">จำนวนรายการ: <strong>{{ count() }}</strong></div>
+      <div class="pill">เฉลี่ยต่อรายการ: <strong>{{ avg() | number:'1.2-2' }} บาท</strong></div>
+    </section>
+
+    <!-- 💡 กราฟวงกลม: สัดส่วนตามหมวดหมู่ (Pie Chart) -->
+    <h2>📊 สัดส่วนรายจ่ายตามหมวดหมู่</h2>
+    <div class="chart-area pie-chart">
+      <!-- ใช้ BaseChartDirective ที่เรา Import เข้ามา -->
+      <canvas baseChart 
+        [data]="pieChartData()" 
+        [type]="pieChartType"
+        [options]="{ maintainAspectRatio: false }"
+        style="height: 400px; max-width: 600px; margin: 0 auto; display: block;">
+      </canvas>
+    </div>
+
+    <!-- 💡 กราฟเส้น: แนวโน้มรายจ่ายรายเดือน (Line Chart) -->
+    <h2>📈 แนวโน้มรายจ่ายรายเดือน</h2>
+    <div class="chart-area line-chart">
+      <!-- ใช้ BaseChartDirective ที่เรา Import เข้ามา -->
+      <canvas baseChart 
+        [data]="lineChartData()" 
+        [type]="lineChartType"
+        [options]="{ maintainAspectRatio: false }"
+        style="height: 400px; width: 100%;">
+      </canvas>
+    </div>
+
+    <!-- รายละเอียดตามหมวดหมู่ (Bar Chart แบบง่าย) -->
+    <h2>📉 รายละเอียดตามหมวดหมู่</h2>
+    <div class="category-bars">
+      <div *ngFor="let item of byCategory()" class="bar-item">
+        <span class="category-name">{{ item[0] }}</span>
+        <span class="category-amount">{{ item[1] | number:'1.2-2' }} บาท</span>
+        <div class="bar-visual">
+          <div class="bar-fill" [style.width]="barWidth(item[1])"></div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noData>
+    <div class="empty-state">
+      <p>ไม่พบข้อมูลรายจ่ายที่ตรงกับตัวกรอง</p>
+      <button class="ghost" (click)="clearFilters()">รีเซ็ตตัวกรอง</button>
+    </div>
+  </ng-template>
+
+</div>
