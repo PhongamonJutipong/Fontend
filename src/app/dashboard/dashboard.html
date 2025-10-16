@@ -1,0 +1,59 @@
+<div class="dashboard-container">
+  <header class="topbar">
+    <h1>📊 สรุปรายจ่ายของคุณ</h1>
+    <div class="actions">
+      <button (click)="goAdd()">➕ เพิ่มรายจ่าย</button>
+      <button class="ghost" (click)="goReport()">📈 ดูรายงาน</button>
+      <button class="clear" (click)="clearAll()">🗑️ ล้างทั้งหมด</button>
+    </div>
+  </header>
+
+  <!-- แถบสรุปเร็ว -->
+  <section class="quick-summary" *ngIf="expenses().length > 0">
+    <div class="pill">ยอดรวมปัจจุบัน: <strong>{{ total() | number:'1.2-2' }} บาท</strong></div>
+    <button class="linklike" (click)="goReport()">ดูรายงานเชิงลึก →</button>
+  </section>
+
+  <section *ngIf="expenses().length > 0; else empty">
+    <table class="expense-table">
+      <thead>
+        <tr>
+          <th>ชื่อรายการ</th>
+          <th>หมวดหมู่</th>
+          <th>จำนวนเงิน (บาท)</th>
+          <th>วันที่</th>
+          <th>หมายเหตุ</th>
+          <th>ลบ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of expenses()">
+          <td>{{ e.name }}</td>
+          <td>{{ e.category }}</td>
+          <td>{{ e.amount | number:'1.2-2' }}</td>
+          <td>{{ e.date }}</td>
+          <td>{{ e.note }}</td>
+          <td>
+            <button class="remove" (click)="remove(e.id)">✖</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2" class="total-label">รวมทั้งหมด</td>
+          <td colspan="4" class="total-value">{{ total() | number:'1.2-2' }} บาท</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <ng-template #empty>
+    <div class="empty-state">
+      <p>ยังไม่มีข้อมูลรายจ่าย</p>
+      <div class="empty-actions">
+        <button (click)="goAdd()">➕ เพิ่มรายการแรก</button>
+        <button class="ghost" (click)="goReport()">📈 ดูรายงาน</button>
+      </div>
+    </div>
+  </ng-template>
+</div>

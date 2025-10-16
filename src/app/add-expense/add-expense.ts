@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 type Expense = {
+  id: number;
   name: string;
   category: string;
-  amount: number;   // บาท
-  dateISO: string;  // yyyy-MM-dd (input[type=date])
-  note?: string;
+  amount: number;
+  date: string;
+  note: string;
 };
 
 @Component({
@@ -19,48 +21,51 @@ type Expense = {
 export class AddExpense {
   name = '';
   category = '';
-  amount: any = '';     // เก็บเป็น string จาก input แล้วแปลงเป็น number ตอนบันทึก
-  dateISO = '';
+  amount: any = '';
+  date = '';
   note = '';
 
-  // เก็บรายการในหน่วยความจำหน้า (array)
-  expenses: Expense[] = [];
+  private KEY = 'expenses';
 
-  // เพิ่มรายการลง array
-  addExpense(): void {
-    const amt = Number(this.amount);
-    if (!this.name.trim() || !this.category.trim() || !this.dateISO || isNaN(amt) || amt <= 0) {
-      alert('กรอกข้อมูลให้ครบและจำนวนเงินต้องมากกว่า 0 บาท');
+  constructor(private router: Router) { }
+
+  private readAll(): Expense[] {
+    try {
+      const data = localStorage.getItem(this.KEY) || '[]';
+      const arr = JSON.parse(data);
+      return Array.isArray(arr) ? arr : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private writeAll(list: Expense[]) {
+    localStorage.setItem(this.KEY, JSON.stringify(list));
+  }
+
+  save(): void {
+    if (!this.name.trim() || !this.category.trim() || !this.amount || !this.date) {
+      alert('กรุณากรอกข้อมูลให้ครบ');
       return;
     }
 
-    const item: Expense = {
+    const list = this.readAll();
+    const newItem: Expense = {
+      id: Date.now(),
       name: this.name.trim(),
       category: this.category.trim(),
-      amount: Math.round(amt * 100) / 100, // ปัดทศนิยม 2 ตำแหน่ง
-      dateISO: this.dateISO,
-      note: this.note?.trim() || ''
+      amount: Number(this.amount),
+      date: this.date,
+      note: this.note.trim()
     };
 
-    this.expenses.unshift(item); // ใส่หัวลิสต์ให้เห็นทันที
-
-    // (ถ้าต้องการจำค่าไว้ครั้งหน้า เปิด 2 บรรทัดนี้)
-    // const saved = JSON.parse(localStorage.getItem('expenses') || '[]');
-    // localStorage.setItem('expenses', JSON.stringify([item, ...saved]));
-
-    // ล้างฟอร์ม
-    this.name = '';
-    this.category = '';
-    this.amount = '';
-    this.dateISO = '';
-    this.note = '';
+    list.push(newItem);
+    this.writeAll(list);
+    alert('เพิ่มข้อมูลเรียบร้อย');
+    this.router.navigate(['/dashboard']);
   }
 
-  removeAt(i: number): void {
-    this.expenses.splice(i, 1);
-  }
-
-  get total(): number {
-    return this.expenses.reduce((s, e) => s + e.amount, 0);
+  cancel(): void {
+    this.router.navigate(['/dashboard']);
   }
 }

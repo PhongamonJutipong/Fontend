@@ -1,31 +1,176 @@
-.register-link {
-  background: none;
-  border: none;
-  color: #667eea;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: none;
-  padding: 0;
-  margin-left: 4px;
-  transition: color 0.2s;
+:root {
+    --brand: #e11d48;
+    --brand-dark: #be123c;
+    --gray: #6b7280;
+    --bg: #fff;
+    --bg-light: #fef2f2;
+    --border: #f3f4f6;
+    --shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    --radius: 14px;
 }
 
-.register-link:hover {
-  color: #764ba2;
-  text-decoration: underline;
+/* ===== Container ===== */
+.dashboard-container {
+    max-width: 960px;
+    margin: 40px auto;
+    background: var(--bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    font-family: "Segoe UI", sans-serif;
 }
 
-.error-text {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #fc8181;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+/* ===== Header ===== */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
-.error-text::before {
-  content: '⚠';
-  font-size: 14px;
+.topbar h1 {
+    font-size: 1.6rem;
+    color: var(--brand-dark);
+    font-weight: 600;
+}
+
+/* ===== Buttons ===== */
+.actions button {
+    margin: 6px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+button {
+    background: var(--brand);
+    color: white;
+    box-shadow: 0 2px 6px rgba(225, 29, 72, 0.25);
+}
+
+button:hover {
+    background: var(--brand-dark);
+}
+
+button.clear {
+    background: #9ca3af;
+    box-shadow: none;
+}
+
+button.clear:hover {
+    background: #6b7280;
+}
+
+button.ghost {
+    background: transparent;
+    color: var(--brand);
+    border: 2px solid var(--brand);
+}
+
+button.ghost:hover {
+    background: var(--bg-light);
+}
+
+/* ===== Quick Summary ===== */
+.quick-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 18px;
+}
+
+.pill {
+    color: var(--brand-dark);
+    font-weight: 500;
+}
+
+.linklike {
+    background: none;
+    border: none;
+    color: var(--brand-dark);
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.linklike:hover {
+    opacity: 0.8;
+}
+
+/* ===== Table ===== */
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.expense-table th {
+    background: var(--brand);
+    color: white;
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 500;
+}
+
+.expense-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+.expense-table tbody tr:hover {
+    background: #fff5f5;
+}
+
+.remove {
+    background: #f87171;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.remove:hover {
+    background: #dc2626;
+}
+
+tfoot .total-label {
+    font-weight: 600;
+    text-align: right;
+    padding-top: 10px;
+}
+
+tfoot .total-value {
+    font-weight: bold;
+    color: var(--brand);
+    text-align: right;
+    padding-top: 10px;
+}
+
+/* ===== Empty State ===== */
+.empty-state {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--gray);
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+}
+
+.empty-actions button {
+    margin: 6px;
+    padding: 8px 16px;
 }
