@@ -1,0 +1,31 @@
+.register-link {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  margin-left: 4px;
+  transition: color 0.2s;
+}
+
+.register-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.error-text {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #fc8181;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.error-text::before {
+  content: '⚠';
+  font-size: 14px;
+}

@@ -5,28 +5,63 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrls: ['./login.css']
 })
-export class Login {
-email = '';
+export class LoginComponent {
+  email = '';
   password = '';
-  errorMessage = '';
+  rememberMe = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  onLogin() {
-    if (this.email === 'admin@test.com' && this.password === '123456') {
-      const user = {
-        email: this.email,
-        name: 'Admin User',
-        loginTime: new Date().toISOString()
-      };
+  onLogin(): void {
+    // โหลดข้อมูลผู้ใช้ทั้งหมดจาก localStorage
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+    // หาผู้ใช้ที่มีอีเมลและรหัสผ่านตรงกัน
+    const user = users.find(
+      (u: any) =>
+        u.email?.trim().toLowerCase() === this.email.trim().toLowerCase() &&
+        u.password === this.password
+    );
+
+    if (user) {
+      // ถ้าพบผู้ใช้
+      alert(`ยินดีต้อนรับ ${user.fullName || user.email}!`);
+
+      // บันทึกผู้ใช้ที่ล็อกอินไว้ใน localStorage
       localStorage.setItem('currentUser', JSON.stringify(user));
+
+      // ถ้าเลือกจำฉันไว้ ให้เก็บอีเมลไว้
+      if (this.rememberMe) {
+        localStorage.setItem('rememberEmail', user.email);
+      } else {
+        localStorage.removeItem('rememberEmail');
+      }
+
+      // ไปหน้า dashboard
       this.router.navigate(['/dashboard']);
     } else {
-      this.errorMessage = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+      alert('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
     }
+  }
+
+  ngOnInit(): void {
+    // ถ้าเคยติ๊ก "จำฉันไว้" จะเติมอีเมลอัตโนมัติ
+    const savedEmail = localStorage.getItem('rememberEmail');
+    if (savedEmail) {
+      this.email = savedEmail;
+      this.rememberMe = true;
+    }
+  }
+
+  onRegister(): void {
+    this.router.navigate(['/register']);
+  }
+
+  onForgotPassword(): void {
+    alert('หน้านี้ยังไม่เปิดใช้งาน');
   }
 }

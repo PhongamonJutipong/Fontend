@@ -6,5 +6,6 @@ export const routes: Routes = [
   { path: 'add-expense', loadChildren: () => import('./add-expense/add-expense.routes').then(m => m.ADD_EXPENSE_ROUTES) },
   { path: 'categories',  loadChildren: () => import('./categories/categories.routes').then(m => m.CATEGORIES_ROUTES) },
   { path: 'report',      loadChildren: () => import('./report.component/report.routes').then(m => m.REPORT_ROUTES) },
+  { path: 'register',      loadChildren: () => import('./register/register.routes').then(m => m.REGISTER_ROUTES) },
   { path: '**', redirectTo: '' }
 ];

@@ -1,1 +1,66 @@
-<p>add-expense works!</p>
+<div class="wrap">
+  <h1>➕ เพิ่มรายการค่าใช้จ่าย</h1>
+  <p class="muted">ฟิลด์: ชื่อ, ประเภท, จำนวนเงิน (บาท), วันที่, หมายเหตุ</p>
+
+  <form (ngSubmit)="addExpense()" #f="ngForm" class="card" novalidate>
+    <div class="grid">
+      <div class="field">
+        <label>ชื่อ</label>
+        <input type="text" [(ngModel)]="name" name="name" required placeholder="เช่น ข้าวกลางวัน" />
+      </div>
+
+      <div class="field">
+        <label>ประเภท</label>
+        <input type="text" [(ngModel)]="category" name="category" required placeholder="เช่น อาหาร/เดินทาง/บันเทิง" />
+      </div>
+
+      <div class="field">
+        <label>จำนวนเงิน (บาท)</label>
+        <input type="number" [(ngModel)]="amount" name="amount" min="0.01" step="0.01" required placeholder="0.00" />
+      </div>
+
+      <div class="field">
+        <label>วันที่</label>
+        <input type="date" [(ngModel)]="dateISO" name="dateISO" required />
+      </div>
+
+      <div class="field field-full">
+        <label>หมายเหตุ (ถ้ามี)</label>
+        <input type="text" [(ngModel)]="note" name="note" placeholder="รายละเอียดเพิ่มเติม" />
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="submit" [disabled]="f.invalid">บันทึกลงรายการ</button>
+    </div>
+  </form>
+
+  <div class="list card" *ngIf="expenses.length; else empty">
+    <div class="list-head">
+      <strong>รายการล่าสุด</strong>
+      <span class="muted">รวมทั้งหมด: {{ total | number:'1.2-2' }} บาท</span>
+    </div>
+
+    <div class="row head">
+      <div>วันที่</div>
+      <div>ชื่อ</div>
+      <div class="hide-sm">ประเภท</div>
+      <div class="right">จำนวนเงิน</div>
+      <div class="center">ลบ</div>
+    </div>
+
+    <div class="row" *ngFor="let e of expenses; let i = index">
+      <div>{{ e.dateISO }}</div>
+      <div>{{ e.name }}</div>
+      <div class="hide-sm">{{ e.category }}</div>
+      <div class="right">{{ e.amount | number:'1.2-2' }}</div>
+      <div class="center">
+        <button class="btn ghost danger" type="button" (click)="removeAt(i)">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #empty>
+    <p class="muted">ยังไม่มีรายการ ลองเพิ่มรายการแรกของคุณด้านบน</p>
+  </ng-template>
+</div>
