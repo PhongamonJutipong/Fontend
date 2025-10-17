@@ -6,7 +6,15 @@
     <input type="text" [(ngModel)]="name" name="name" placeholder="เช่น ข้าวกลางวัน" required>
 
     <label>ประเภท</label>
-    <input type="text" [(ngModel)]="category" name="category" placeholder="อาหาร / เดินทาง / อื่น ๆ" required>
+    <select [(ngModel)]="category" name="category" required>
+      <option value="" disabled selected>-- เลือกประเภท --</option>
+      <option value="อาหาร">อาหาร</option>
+      <option value="เดินทาง">เดินทาง</option>
+      <option value="ของใช้">ของใช้</option>
+      <option value="บันเทิง">บันเทิง</option>
+      <option value="อื่น ๆ">อื่น ๆ</option>
+    </select>
+
 
     <label>จำนวนเงิน (บาท)</label>
     <input type="number" [(ngModel)]="amount" name="amount" min="1" required>
