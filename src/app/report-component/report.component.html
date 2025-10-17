@@ -1,5 +1,5 @@
 <div class="report-container">
-  <h1>📈 รายงานรายจ่าย</h1>
+  <h1>รายงานรายจ่าย</h1>
 
   <!-- ส่วนควบคุมตัวกรอง (Filters) -->
   <section class="filters">
@@ -26,22 +26,21 @@
         <input type="search" placeholder="ชื่อ/หมายเหตุ" [ngModel]="keyword()" (ngModelChange)="keyword.set($event)">
       </label>
       <button class="ghost" (click)="clearFilters()">รีเซ็ต</button>
-      <button (click)="exportCSV()">💾 ส่งออก CSV ({{ count() }} รายการ)</button>
+      <button (click)="exportCSV()">ส่งออก CSV ({{ count() }} รายการ)</button>
     </div>
   </section>
 
   <hr>
   
   <ng-container *ngIf="count() > 0; else noData">
-    <!-- สรุปตัวเลข (Stats) -->
+  
     <section class="stats-summary">
       <div class="pill">ยอดรวม: <strong>{{ total() | number:'1.2-2' }} บาท</strong></div>
       <div class="pill">จำนวนรายการ: <strong>{{ count() }}</strong></div>
       <div class="pill">เฉลี่ยต่อรายการ: <strong>{{ avg() | number:'1.2-2' }} บาท</strong></div>
     </section>
 
-    <!-- 💡 กราฟวงกลม: สัดส่วนตามหมวดหมู่ (Pie Chart) -->
-    <h2>📊 สัดส่วนรายจ่ายตามหมวดหมู่</h2>
+    <h2>สัดส่วนรายจ่ายตามหมวดหมู่</h2>
     <div class="chart-area">
       <canvas baseChart
         [type]="pieChartType"
@@ -50,18 +49,7 @@
       </canvas>
     </div>
 
-    <!-- 💡 กราฟเส้น: แนวโน้มรายจ่ายรายเดือน (Line Chart) -->
-    <h2>📈 แนวโน้มรายจ่ายรายเดือน</h2>
-    <div class="chart-area">
-      <canvas baseChart
-        [type]="lineChartType"
-        [data]="lineChartData()"
-        style="height: 400px; width: 100%;">
-      </canvas>
-    </div>
-
-    <!-- รายละเอียดตามหมวดหมู่ (Bar Chart แบบง่าย) -->
-    <h2>📉 รายละเอียดตามหมวดหมู่</h2>
+    <h2>รายละเอียดตามหมวดหมู่</h2>
     <div class="category-bars">
       <div *ngFor="let item of byCategory()" class="bar-item">
         <span class="category-name">{{ item[0] }}</span>
