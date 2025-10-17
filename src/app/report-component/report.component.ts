@@ -1,42 +1,36 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, viewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Chart, ChartType, ChartData ,registerables } from 'chart.js';
+import { NgChartsModule } from 'ng2-charts';
 
-// 💡 แก้ไขการนำเข้า: นำเข้า BaseChartDirective แทน NgChartsModule
-import { BaseChartDirective } from 'ng2-charts'; 
-import { ChartType, ChartData } from 'chart.js'; 
+Chart.register(...registerables);  
 
 type Expense = {
   id: number;
   name: string;
   category: string;
   amount: number;
-  date: string; // yyyy-mm-dd
+  date: string;
   note: string;
 };
 
 @Component({
-  selector: 'app-report.component',
-  // 💡 แก้ไข imports: ใช้ BaseChartDirective แทน NgChartsModule
-  imports: [CommonModule, FormsModule, BaseChartDirective], 
+  selector: 'app-report',
+  standalone: true,
+  imports: [CommonModule, FormsModule,NgChartsModule],
   templateUrl: './report.component.html',
-  styleUrl: './report.component.css',
-  standalone: true // เพิ่ม standalone: true หากยังไม่มี
+  styleUrls: ['./report.component.css']
 })
 export class ReportComponent {
   private KEY = 'expenses';
 
-  // raw data
   expenses = signal<Expense[]>([]);
-
-  // filters
   dateFrom = signal<string>('');
   dateTo = signal<string>('');
   categoryFilter = signal<string>('');
   keyword = signal<string>('');
 
-  // load data
   ngOnInit(): void {
     this.reload();
   }
@@ -51,9 +45,7 @@ export class ReportComponent {
     }
   }
 
-  // filtered data (โค้ดเดิม)
   filtered = computed(() => {
-    // ... (โค้ดเดิมของ filtered) ...
     const list = this.expenses();
     const from = this.dateFrom();
     const to = this.dateTo();
@@ -72,18 +64,15 @@ export class ReportComponent {
     });
   });
 
-  // top stats (โค้ดเดิม)
   total = computed(() => this.filtered().reduce((s, e) => s + (Number(e.amount) || 0), 0));
   count = computed(() => this.filtered().length);
-  avg = computed(() => this.count() ? this.total() / this.count() : 0);
+  avg = computed(() => (this.count() ? this.total() / this.count() : 0));
 
-  // unique categories (โค้ดเดิม)
   categories = computed(() => {
     const set = new Set(this.expenses().map(e => (e.category || '').trim()).filter(Boolean));
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   });
 
-  // group by category (โค้ดเดิม)
   byCategory = computed(() => {
     const map = new Map<string, number>();
     for (const e of this.filtered()) {
@@ -93,7 +82,6 @@ export class ReportComponent {
     return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
   });
 
-  // group by month (โค้ดเดิม)
   byMonth = computed(() => {
     const map = new Map<string, number>();
     for (const e of this.filtered()) {
@@ -103,43 +91,39 @@ export class ReportComponent {
     return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
   });
 
-  // ----------------------------------------------------
-  // 💡 โค้ดสำหรับเตรียมข้อมูลกราฟ (แก้ปัญหา Unexpected "}")
-  // ----------------------------------------------------
-
+  // ---------- กราฟ ----------
   pieChartType: ChartType = 'pie';
-  
+  lineChartType: ChartType = 'line';
+
   pieChartData = computed<ChartData<'pie'>>(() => {
     const data = this.byCategory();
-    return { // 💡 ต้องมี return {
+    return {
       labels: data.map(([category]) => category),
-      datasets: [{
-        data: data.map(([, sum]) => sum),
-        backgroundColor: this.getChartColors(data.length) // เรียกใช้ฟังก์ชัน
-      }]
-    }; // 💡 ต้องมี }
+      datasets: [
+        {
+          data: data.map(([, sum]) => sum),
+          backgroundColor: this.getChartColors(data.length)
+        }
+      ]
+    };
   });
-
-  lineChartType: ChartType = 'line';
 
   lineChartData = computed<ChartData<'line'>>(() => {
     const data = this.byMonth();
-    return { // 💡 ต้องมี return {
+    return {
       labels: data.map(([month]) => month),
-      datasets: [{
-        data: data.map(([, sum]) => sum),
-        label: 'ยอดรวมรายจ่าย (บาท)',
-        tension: 0.3, 
-        backgroundColor: 'rgba(75, 192, 192, 0.4)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        fill: true
-      }]
-    }; // 💡 ต้องมี }
+      datasets: [
+        {
+          data: data.map(([, sum]) => sum),
+          label: 'ยอดรวมรายเดือน (บาท)',
+          borderColor: 'rgba(75,192,192,1)',
+          backgroundColor: 'rgba(75,192,192,0.3)',
+          fill: true,
+          tension: 0.3
+        }
+      ]
+    };
   });
-  
-  // ----------------------------------------------------
-  // 💡 โค้ดสำหรับฟังก์ชันสร้างสี (แก้ปัญหา Property 'getChartColors' does not exist)
-  // ----------------------------------------------------
 
   getChartColors(count: number): string[] {
     const colors = [
@@ -149,11 +133,6 @@ export class ReportComponent {
     return Array(count).fill(null).map((_, i) => colors[i % colors.length]);
   }
 
-  // ----------------------------------------------------
-  // โค้ดส่วนอื่นๆ ของคุณ (โค้ดเดิม)
-  // ----------------------------------------------------
-  
-  // สำหรับ bar chart (normalize 0..100)
   maxCategory = computed(() => {
     const arr = this.byCategory();
     return arr.length ? Math.max(...arr.map(([, sum]) => sum)) : 0;
@@ -164,7 +143,6 @@ export class ReportComponent {
     return `${Math.round((v / max) * 100)}%`;
   }
 
-  // CSV Export (โค้ดเดิม)
   exportCSV(): void {
     const rows = [
       ['Date', 'Name', 'Category', 'Amount', 'Note'],

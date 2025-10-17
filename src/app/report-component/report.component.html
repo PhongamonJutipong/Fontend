@@ -42,24 +42,20 @@
 
     <!-- 💡 กราฟวงกลม: สัดส่วนตามหมวดหมู่ (Pie Chart) -->
     <h2>📊 สัดส่วนรายจ่ายตามหมวดหมู่</h2>
-    <div class="chart-area pie-chart">
-      <!-- ใช้ BaseChartDirective ที่เรา Import เข้ามา -->
-      <canvas baseChart 
-        [data]="pieChartData()" 
+    <div class="chart-area">
+      <canvas baseChart
         [type]="pieChartType"
-        [options]="{ maintainAspectRatio: false }"
-        style="height: 400px; max-width: 600px; margin: 0 auto; display: block;">
+        [data]="pieChartData()"
+        style="height: 400px; max-width: 600px; margin: 0 auto;">
       </canvas>
     </div>
 
     <!-- 💡 กราฟเส้น: แนวโน้มรายจ่ายรายเดือน (Line Chart) -->
     <h2>📈 แนวโน้มรายจ่ายรายเดือน</h2>
-    <div class="chart-area line-chart">
-      <!-- ใช้ BaseChartDirective ที่เรา Import เข้ามา -->
-      <canvas baseChart 
-        [data]="lineChartData()" 
+    <div class="chart-area">
+      <canvas baseChart
         [type]="lineChartType"
-        [options]="{ maintainAspectRatio: false }"
+        [data]="lineChartData()"
         style="height: 400px; width: 100%;">
       </canvas>
     </div>
