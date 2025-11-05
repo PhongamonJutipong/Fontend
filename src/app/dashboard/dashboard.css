@@ -1,176 +1,375 @@
-:root {
-    --brand: #e11d48;
-    --brand-dark: #be123c;
-    --gray: #6b7280;
-    --bg: #fff;
-    --bg-light: #fef2f2;
-    --border: #f3f4f6;
-    --shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-    --radius: 14px;
+/* ==================== Global Styles ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ===== Container ===== */
+body {
+  font-family: 'Sarabun', 'Prompt', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* ==================== Dashboard Container ==================== */
 .dashboard-container {
-    max-width: 960px;
-    margin: 40px auto;
-    background: var(--bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 28px;
-    font-family: "Segoe UI", sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-in;
 }
 
-/* ===== Header ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== Top Bar ==================== */
 .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .topbar h1 {
-    font-size: 1.6rem;
-    color: var(--brand-dark);
-    font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* ===== Buttons ===== */
-.actions button {
-    margin: 6px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 10px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
+/* ==================== Buttons ==================== */
 button {
-    background: var(--brand);
-    color: white;
-    box-shadow: 0 2px 6px rgba(225, 29, 72, 0.25);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-button:hover {
-    background: var(--brand-dark);
+button:not(.ghost):not(.clear):not(.remove):not(.linklike) {
+  background: white;
+  color: #667eea;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-button.clear {
-    background: #9ca3af;
-    box-shadow: none;
-}
-
-button.clear:hover {
-    background: #6b7280;
+button:not(.ghost):not(.clear):not(.remove):not(.linklike):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 button.ghost {
-    background: transparent;
-    color: var(--brand);
-    border: 2px solid var(--brand);
+  background: transparent;
+  color: white;
+  border: 2px solid white;
 }
 
 button.ghost:hover {
-    background: var(--bg-light);
+  background: white;
+  color: #667eea;
+  transform: translateY(-2px);
 }
 
-/* ===== Quick Summary ===== */
+button.clear {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+button.clear:hover {
+  background: #ef4444;
+  transform: translateY(-2px);
+}
+
+button.remove {
+  background: #fee;
+  color: #ef4444;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+button.remove:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.1);
+}
+
+button.linklike {
+  background: transparent;
+  color: #667eea;
+  padding: 0.5rem 1rem;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+button.linklike:hover {
+  color: #764ba2;
+  transform: translateX(5px);
+}
+
+/* ==================== Quick Summary ==================== */
 .quick-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--bg-light);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    margin-bottom: 18px;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-bottom: 3px solid #f59e0b;
 }
 
 .pill {
-    color: var(--brand-dark);
-    font-weight: 500;
+  background: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  color: #333;
 }
 
-.linklike {
-    background: none;
-    border: none;
-    color: var(--brand-dark);
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: underline;
+.pill strong {
+  color: #f59e0b;
+  font-size: 1.3rem;
+  margin-left: 0.5rem;
 }
 
-.linklike:hover {
-    opacity: 0.8;
+/* ==================== Table Styles ==================== */
+section {
+  padding: 2rem;
 }
 
-/* ===== Table ===== */
 .expense-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: var(--radius);
-    overflow: hidden;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.expense-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
 }
 
 .expense-table th {
-    background: var(--brand);
-    color: white;
-    text-align: left;
-    padding: 12px 14px;
-    font-weight: 500;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
 }
 
-.expense-table td {
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
+.expense-table tbody tr {
+  background: white;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .expense-table tbody tr:hover {
-    background: #fff5f5;
+  background: #f8f9ff;
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
 }
 
-.remove {
-    background: #f87171;
-    border: none;
-    color: white;
-    border-radius: 8px;
-    padding: 4px 10px;
-    cursor: pointer;
-    transition: 0.15s;
+.expense-table tbody tr:last-child {
+  border-bottom: none;
 }
 
-.remove:hover {
-    background: #dc2626;
+.expense-table td {
+  padding: 1rem;
+  color: #333;
+  font-size: 0.95rem;
 }
 
-tfoot .total-label {
-    font-weight: 600;
-    text-align: right;
-    padding-top: 10px;
+.expense-table tfoot {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  font-weight: 600;
 }
 
-tfoot .total-value {
-    font-weight: bold;
-    color: var(--brand);
-    text-align: right;
-    padding-top: 10px;
+.expense-table tfoot td {
+  padding: 1.25rem 1rem;
+  font-size: 1.1rem;
 }
 
-/* ===== Empty State ===== */
+.total-label {
+  color: #333;
+  font-weight: 700;
+}
+
+.total-value {
+  color: #f59e0b;
+  font-weight: 700;
+  font-size: 1.3rem !important;
+  text-align: right;
+}
+
+/* ==================== Empty State ==================== */
 .empty-state {
-    text-align: center;
-    padding: 60px 0;
-    color: var(--gray);
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
 }
 
 .empty-state p {
-    font-size: 1.1rem;
-    margin-bottom: 16px;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #999;
+}
+
+.empty-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .empty-actions button {
-    margin: 6px;
-    padding: 8px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.empty-actions button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.empty-actions button.ghost {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.empty-actions button.ghost:hover {
+  background: #667eea;
+  color: white;
+}
+
+/* ==================== Responsive Design ==================== */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+  }
+
+  .topbar h1 {
+    font-size: 1.5rem;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions button {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .quick-summary {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .expense-table {
+    font-size: 0.85rem;
+  }
+
+  .expense-table th,
+  .expense-table td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .expense-table thead {
+    display: none;
+  }
+
+  .expense-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-bottom: none;
+  }
+
+  .expense-table tbody td {
+    display: block;
+    text-align: right;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  .expense-table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .expense-table tbody td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    font-weight: 600;
+    color: #667eea;
+  }
+
+  .expense-table tfoot td {
+    display: block;
+    text-align: center;
+  }
+}
+
+/* ==================== Animations ==================== */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.expense-table tbody tr {
+  animation: slideIn 0.3s ease-out;
+}
+
+button:active {
+  transform: scale(0.98);
 }
